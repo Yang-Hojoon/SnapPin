@@ -1,0 +1,95 @@
+.side-nav {
+  display: none; /* 모바일, 태블릿에서는 숨김 */
+}
+
+/* 데스크탑에서만 표시 */
+@media (min-width: 1200px) {
+  .side-nav {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: var(--sidenav-width);
+    height: 100vh;
+    background-color: var(--color-white);
+    border-right: 1px solid var(--color-border);
+    padding: 24px 16px;
+    z-index: 200;
+  }
+
+  /* 로고 */
+  .side-nav__logo {
+    font-size: 22px;
+    font-weight: 500;
+    color: var(--color-primary);
+    letter-spacing: -0.5px;
+    margin-bottom: 36px;
+    padding-left: 8px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-family: var(--font-family);
+    text-align: left;
+  }
+
+  .side-nav__logo span {
+    color: var(--color-text);
+  }
+
+  /* 메뉴 목록 */
+  .side-nav__menu {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+  }
+
+  /* 개별 메뉴 아이템 */
+  .side-nav__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    color: var(--color-text-sub);
+    font-size: 14px;
+    font-weight: 400;
+    width: 100%;
+  }
+
+  .side-nav__item:hover {
+    background-color: var(--color-bg);
+    color: var(--color-text);
+  }
+
+  .side-nav__item.active {
+    background-color: var(--color-primary-light);
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  /* 게시하기 버튼 */
+  .side-nav__upload {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    background-color: var(--color-primary);
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1;
+    width: 100%;
+    margin-top: 16px;
+    cursor: pointer;
+    border: none;
+    font-family: var(--font-family);
+  }
+
+  .side-nav__upload:hover {
+    opacity: 0.9;
+  }
+}

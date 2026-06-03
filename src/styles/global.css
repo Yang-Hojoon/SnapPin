@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+
+:root {
+  --color-primary: #5B5CF6;
+  --color-primary-light: #EEF2FF;
+  --color-bg: #F6F6F4;
+  --color-white: #FFFFFF;
+  --color-text: #1A1A1A;
+  --color-text-sub: #9A9A9A;
+  --color-border: #EBEBEB;
+
+  --font-family: 'Noto Sans KR', sans-serif;
+
+  --header-height: 56px;
+  --bottomnav-height: 64px;
+  --sidenav-width: 220px;
+
+  --radius-card: 3px; /* 각진 모서리 */
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--font-family);
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* 모바일: 전체 너비로 꽉 채움 */
+#root {
+  max-width: 100%;
+  width: 100%;
+  min-height: 100vh;
+  background-color: var(--color-bg);
+}
+
+/* 데스크탑: 사이드 네비 만큼 왼쪽 여백 */
+@media (min-width: 1200px) {
+  #root {
+    padding-left: var(--sidenav-width);
+  }
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-family: var(--font-family);
+}
+
+img {
+  display: block;
+}
+
+/* 전체 버튼 클릭 피드백 */
+button:active {
+  opacity: 0.8;
+}
+
+/* 탭/메뉴 아이템 전환 효과 */
+.bottom-nav__item,
+.side-nav__item {
+  transition: background-color 0.15s, color 0.15s;
+}

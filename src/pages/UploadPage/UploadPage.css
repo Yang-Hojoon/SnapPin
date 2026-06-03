@@ -1,0 +1,417 @@
+/* ===== 헤더 ===== */
+.upload-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 14px;
+  z-index: 100;
+}
+
+.upload-header__title {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text);
+}
+
+.upload-header__close {
+  width: 36px;
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text);
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.upload-header__post-btn {
+  padding: 6px 16px;
+  background-color: var(--color-primary);
+  color: #ffffff;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+}
+
+.upload-header__post-btn:disabled {
+  background-color: var(--color-border);
+  color: var(--color-text-sub);
+  cursor: not-allowed;
+}
+
+/* ===== 메인 ===== */
+.upload {
+  padding-top: var(--header-height);
+  padding-bottom: var(--bottomnav-height);
+  min-height: 100vh;
+  background-color: var(--color-white);
+}
+
+/* ===== 모바일: 사진이 상단을 크게 차지 ===== */
+.upload__photo-area {
+  width: 100%;
+  height: 42vh;
+  cursor: pointer;
+  overflow: hidden;
+  background-color: #1A1A1A;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.upload__photo-preview {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.upload__photo-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  color: rgba(255,255,255,0.5);
+}
+
+.upload__photo-placeholder span {
+  font-size: 13px;
+}
+
+.upload__file-input { display: none; }
+
+/* 문구 입력 — 사진 아래 */
+.upload__caption-wrap {
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.upload__caption {
+  width: 100%;
+  min-height: 90px;
+  resize: none;
+  border: none;
+  padding: 14px;
+  font-size: 14px;
+  color: var(--color-text);
+  background-color: var(--color-white);
+  font-family: var(--font-family);
+  outline: none;
+  line-height: 1.6;
+  display: block;
+}
+
+/* ===== 섹션 공통 ===== */
+.upload__section {
+  background-color: var(--color-white);
+  padding: 14px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.upload__section-label {
+  font-size: 11px;
+  color: var(--color-text-sub);
+  margin: 0 0 10px;
+  font-weight: 500;
+}
+
+/* ===== 위치 ===== */
+.upload__location {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.upload__location-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.upload__location-address {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.upload__location-sub {
+  font-size: 11px;
+  color: var(--color-text-sub);
+  margin: 2px 0 0;
+}
+
+.upload__location-badge {
+  font-size: 10px;
+  font-weight: 500;
+  padding: 3px 8px;
+  border-radius: 20px;
+  flex-shrink: 0;
+}
+
+.upload__location-badge.auto { background-color: #E1F5EE; color: #0F6E56; }
+.upload__location-badge.manual { background-color: var(--color-primary-light); color: var(--color-primary); }
+
+/* ===== 카테고리 ===== */
+.upload__tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.upload__tag {
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  border: 1px solid var(--color-border);
+  color: var(--color-text-sub);
+  background: var(--color-white);
+  cursor: pointer;
+}
+
+.upload__tag.active {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+  background-color: var(--color-primary-light);
+  font-weight: 500;
+}
+
+/* ===== 토글 ===== */
+.upload__toggle-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.upload__toggle-info { flex: 1; }
+
+.upload__toggle-title {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.upload__toggle-sub {
+  font-size: 11px;
+  color: var(--color-text-sub);
+  margin: 3px 0 0;
+}
+
+.upload__toggle {
+  position: relative;
+  width: 42px;
+  height: 24px;
+  border-radius: 12px;
+  cursor: pointer;
+  flex-shrink: 0;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+.upload__toggle.on { background-color: var(--color-primary); }
+.upload__toggle.off { background-color: var(--color-border); }
+
+.upload__toggle-thumb {
+  position: absolute;
+  top: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  transition: left 0.2s;
+}
+
+.upload__toggle.on .upload__toggle-thumb { left: calc(100% - 21px); }
+.upload__toggle.off .upload__toggle-thumb { left: 3px; }
+
+.upload__precision {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.upload__precision-label {
+  font-size: 11px;
+  color: var(--color-text-sub);
+}
+
+.upload__precision-label.active {
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+/* ===== 태블릿: 사진 더 크게 ===== */
+@media (min-width: 768px) {
+  .upload__photo-area {
+    height: 50vh;
+  }
+
+  .upload__caption {
+    font-size: 15px;
+    min-height: 100px;
+  }
+}
+
+/* ===== 데스크탑: 2단 레이아웃, 여백 없음 ===== */
+@media (min-width: 1200px) {
+  .upload {
+    padding-bottom: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    height: calc(100vh - var(--header-height));
+    overflow: hidden;
+    margin: 0;
+    gap: 0;
+    background-color: var(--color-white);
+  }
+
+  /* 왼쪽: 사진 꽉 채움 */
+  .upload__left-col {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid var(--color-border);
+    height: 100%;
+  }
+
+  .upload__photo-area {
+    flex: 1;
+    height: auto;
+  }
+
+  .upload__caption-wrap {
+    margin-top: 0;
+    border-top: 1px solid var(--color-border);
+    border-bottom: none;
+  }
+
+  .upload__caption {
+    min-height: 120px;
+  }
+
+  /* 오른쪽: 설정 스크롤 */
+  .upload__right-col {
+    overflow-y: auto;
+    height: 100%;
+  }
+
+  .upload__section {
+    margin-top: 0;
+    border-radius: 0;
+  }
+}
+
+/* 모바일/태블릿에서 컬럼 숨김 */
+.upload__left-col,
+.upload__right-col {
+  display: contents;
+}
+
+@media (min-width: 1200px) {
+  .upload__left-col,
+  .upload__right-col {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .upload__right-col {
+    display: block;
+  }
+}
+
+/* 장소명 입력 */
+.upload__place-input {
+  width: 100%;
+  height: 40px;
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 0 12px;
+  font-size: 14px;
+  color: var(--color-text);
+  font-family: var(--font-family);
+  outline: none;
+  background: var(--color-bg);
+}
+
+.upload__place-input:focus { border-color: var(--color-primary); }
+
+/* 위치 검색 */
+.upload__location {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.upload__location-address {
+  font-size: 13px;
+  color: var(--color-text);
+  font-weight: 500;
+}
+
+.upload__location-search {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  padding: 7px 10px;
+}
+
+.upload__location-search-input {
+  flex: 1;
+  border: none;
+  background: none;
+  font-size: 13px;
+  color: var(--color-text);
+  font-family: var(--font-family);
+  outline: none;
+}
+
+.upload__location-results {
+  margin-top: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.upload__location-result {
+  display: flex;
+  align-items: flex-start;
+  gap: 6px;
+  padding: 8px 4px;
+  border-bottom: 1px solid var(--color-border);
+  background: none;
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  cursor: pointer;
+  text-align: left;
+  font-family: var(--font-family);
+}
+
+.upload__location-result span {
+  font-size: 12px;
+  color: var(--color-text);
+  line-height: 1.4;
+}

@@ -1,0 +1,309 @@
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--header-height);
+  background-color: var(--color-white);
+  border-bottom: 1px solid var(--color-border);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0 14px;
+  z-index: 100;
+}
+
+.header__logo {
+  font-size: 20px;
+  font-weight: 500;
+  color: var(--color-primary);
+  letter-spacing: -0.5px;
+  white-space: nowrap;
+  flex-shrink: 0;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: var(--font-family);
+}
+
+/* 데스크탑: 사이드 네비에 로고가 있으니 헤더 로고 숨김 */
+@media (min-width: 1200px) {
+  .header__logo {
+    display: none;
+  }
+}
+
+.header__logo span {
+  color: var(--color-text);
+}
+
+.header__search {
+  flex: 1;
+  height: 34px;
+  background-color: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0 10px;
+  cursor: pointer;
+}
+
+.header__search-text {
+  font-size: 12px;
+  color: var(--color-text-sub);
+}
+
+.header__icon-btn {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: var(--color-text);
+  border-radius: 8px;
+  transition: background-color 0.15s, transform 0.1s;
+}
+
+.header__icon-btn:hover {
+  background-color: var(--color-bg);
+}
+
+.header__icon-btn:active {
+  transform: scale(0.88);
+  background-color: var(--color-border);
+}
+
+/* 데스크탑: 사이드 네비 너비만큼 오른쪽으로 */
+@media (min-width: 1200px) {
+  .header {
+    left: var(--sidenav-width);
+    width: calc(100% - var(--sidenav-width));
+  }
+}
+
+/* 현재 위치 칩 */
+.header__location-chip {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 10px;
+  border: 1px solid var(--color-border);
+  background: var(--color-white);
+  cursor: pointer;
+  flex-shrink: 0;
+  white-space: nowrap;
+  font-family: var(--font-family);
+}
+
+.header__location-chip { transition: background-color 0.15s, transform 0.1s; }
+.header__location-chip:hover {
+  background-color: var(--color-primary-light);
+  border-color: var(--color-primary);
+}
+
+.header__location-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  flex-shrink: 0;
+  animation: location-pulse 2s ease-in-out infinite;
+}
+
+@keyframes location-pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+.header__location-text {
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--color-primary);
+  line-height: 1;
+}
+
+/* 모바일: 짧은 주소(구 단위)만 표시 */
+.chip-short  { display: inline; }
+.chip-detail { display: none; }
+
+/* PC: 상세 주소 표시 */
+@media (min-width: 1200px) {
+  .chip-short  { display: none; }
+  .chip-detail { display: inline; }
+}
+
+.header__location-chip:active {
+  transform: scale(0.95);
+}
+
+.header__icon-btn--active {
+  background-color: var(--color-primary-light);
+  border-radius: 8px;
+}
+
+
+/* ===== 검색창 (지도 페이지) ===== */
+.header__search-wrap {
+  flex: 1;
+  position: relative;
+}
+
+.header__search--active {
+  width: 100%;
+  cursor: text;
+}
+
+.header__search--focused {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 2px var(--color-primary-light);
+}
+
+.header__search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 12px;
+  color: var(--color-text);
+  background: transparent;
+  min-width: 0;
+  font-family: var(--font-family);
+}
+
+.header__search-input::placeholder { color: var(--color-text-sub); }
+
+.header__search-clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-sub);
+  display: flex;
+  align-items: center;
+  padding: 2px;
+  flex-shrink: 0;
+}
+
+.header__search-spinner {
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--color-border);
+  border-top-color: var(--color-primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+  flex-shrink: 0;
+}
+
+/* 주소 검색 드롭다운 */
+.header__search-results {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: var(--color-white);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.13);
+  list-style: none;
+  margin: 0;
+  padding: 6px 0;
+  z-index: 200;
+  overflow: hidden;
+}
+
+.header__search-result-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+}
+
+.header__search-result-item:hover { background: var(--color-bg); }
+
+.header__result-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text);
+  margin: 0 0 2px;
+}
+
+.header__result-addr {
+  font-size: 11px;
+  color: var(--color-text-sub);
+  margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+
+.header__search-empty {
+  padding: 14px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--color-text-sub);
+}
+
+/* 알림 등 페이지 타이틀 */
+.header__page-title {
+  flex: 1;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--color-text);
+}
+
+/* ===== 모바일 홈 헤더: 위치칩 / 필터 / 로고(중앙) / 검색 / 알림 ===== */
+
+/* 검색 아이콘 버튼: 기본 숨김 (태블릿/PC는 검색창 사용) */
+.header__search-icon-btn {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  /* 검색창(input형) 숨기고 검색 아이콘 노출 */
+  .header--home .header__search {
+    display: none;
+  }
+  .header--home .header__search-icon-btn {
+    display: flex;
+  }
+
+  /* order로 배치 순서 지정: 위치칩(1) 필터(2) [로고는 중앙고정] 검색(4) 알림(5) */
+  .header--home .header__location-chip { order: 1; flex-shrink: 0; }
+  .header--home .header__filter-btn    { order: 2; }
+  .header--home .header__search-icon-btn { order: 4; }
+  .header--home .header__bell-btn      { order: 5; }
+
+  /* 왼쪽 그룹(위치칩+필터)과 오른쪽 그룹(검색+알림)이 양끝으로 밀리도록 */
+  .header--home .header__filter-btn { margin-right: auto; }
+
+  /* 로고: 화면 정중앙 절대 고정 */
+  .header--home .header__logo {
+    order: 3;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    pointer-events: auto;
+  }
+
+  /* 위치칩: 모바일에서 컴팩트하게 (짧은 지역명만) */
+  .header--home .header__location-text.chip-detail { display: none; }
+  .header--home .header__location-text.chip-short {
+    display: inline;
+    max-width: 60px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}

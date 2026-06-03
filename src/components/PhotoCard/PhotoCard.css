@@ -1,0 +1,138 @@
+.photo-card {
+  cursor: pointer;
+  position: relative;
+  border-radius: var(--radius-card);
+  overflow: hidden;
+  background-color: var(--color-border);
+  display: block;
+}
+
+/* 자연 비율 그대로 — aspect-ratio 제거 */
+.photo-card__image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  display: block;
+}
+
+.photo-card__overlay {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  /* 모바일: 더 작은 패딩 */
+  padding: 24px 8px 10px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.72));
+}
+
+.photo-card__title {
+  /* 모바일 기본 크기 */
+  font-size: 11px;
+  font-weight: 600;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 3px;
+}
+
+.photo-card__meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.photo-card__location {
+  font-size: 10px;
+  color: rgba(255,255,255,0.92);
+  display: flex;
+  align-items: center;
+  gap: 2px;
+}
+
+.photo-card__likes {
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  font-size: 10px;
+  color: rgba(255,255,255,0.92);
+}
+
+/* 태블릿 이상: 더 크게 */
+@media (min-width: 768px) {
+  .photo-card__overlay {
+    padding: 32px 11px 14px;
+  }
+  .photo-card__title { font-size: 13px; margin-bottom: 4px; }
+  .photo-card__location,
+  .photo-card__likes { font-size: 11px; gap: 3px; }
+}
+
+/* PC: 최대 크기 */
+@media (min-width: 1200px) {
+  .photo-card__overlay {
+    padding: 40px 12px 16px;
+  }
+  .photo-card__title { font-size: 14px; }
+  .photo-card__location,
+  .photo-card__likes { font-size: 12px; }
+}
+
+/* Pinterest 스타일 호버 효과 */
+.photo-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0);
+  transition: background 0.2s ease;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.photo-card:hover::after {
+  background: rgba(0, 0, 0, 0.18);
+}
+
+/* 텍스트 오버레이는 어두운 필터 위에 */
+.photo-card__overlay {
+  z-index: 2;
+}
+
+/* 호버 시 오버레이가 살짝 위로 올라오며 그라데이션 강조 */
+.photo-card__overlay {
+  transition: padding-bottom 0.2s ease, background 0.2s ease;
+}
+
+.photo-card:hover .photo-card__overlay {
+  padding-bottom: 14px;
+  background: linear-gradient(transparent, rgba(0,0,0,0.82));
+}
+
+.photo-card__title,
+.photo-card__location,
+.photo-card__likes {
+  transition: font-size 0.2s ease;
+}
+
+/* 호버 시 글자만 살짝 커짐 (박스 밖으로 안 나감) */
+.photo-card:hover .photo-card__title {
+  font-size: 12px;
+}
+.photo-card:hover .photo-card__location,
+.photo-card:hover .photo-card__likes {
+  font-size: 11px;
+}
+
+@media (min-width: 768px) {
+  .photo-card:hover .photo-card__overlay { padding-bottom: 18px; }
+  .photo-card:hover .photo-card__title { font-size: 15px; }
+  .photo-card:hover .photo-card__location,
+  .photo-card:hover .photo-card__likes { font-size: 12px; }
+}
+
+@media (min-width: 1200px) {
+  .photo-card:hover .photo-card__overlay { padding-bottom: 20px; }
+  .photo-card:hover .photo-card__title { font-size: 16px; }
+  .photo-card:hover .photo-card__location,
+  .photo-card:hover .photo-card__likes { font-size: 13px; }
+}
