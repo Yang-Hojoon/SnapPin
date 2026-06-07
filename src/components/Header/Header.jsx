@@ -12,6 +12,9 @@ function Header({ showBack = false, onFilterClick, onMapSearch = null }) {
   const location = useLocation();
   const isNotification = location.pathname === '/notification';
   const isMapPage = location.pathname === '/map';
+  const isMessage = location.pathname === '/message';
+  const isMyPage = location.pathname === '/mypage';
+  const isTitlePage = isNotification || isMessage || isMyPage;
 
   const [query, setQuery]       = useState('');
   const [results, setResults]   = useState([]);
@@ -76,7 +79,7 @@ function Header({ showBack = false, onFilterClick, onMapSearch = null }) {
         </button>
       ) : (
         <button className="header__logo" onClick={() => navigate('/')} aria-label="홈으로">
-          Snap<span>Pin</span>
+          <span>Snap</span>Pin
         </button>
       )}
 
@@ -121,32 +124,43 @@ function Header({ showBack = false, onFilterClick, onMapSearch = null }) {
               </ul>
             )}
           </>
-        ) : isNotification ? (
-          /* 알림 페이지: 타이틀 */
-          <span className="header__page-title">알림</span>
-        ) : (
+        ) : !isTitlePage ? (
           /* 그 외: 장식용 검색창 */
           <div className="header__search" onClick={() => navigate('/')}>
             <MagnifyingGlassIcon style={{ width: '15px', height: '15px', color: 'var(--color-text-sub)', flexShrink: 0 }} />
             <span className="header__search-text">장소, 카테고리 검색</span>
           </div>
-        )}
+        ) : null}
       </div>
 
-      <button className="header__icon-btn" onClick={onFilterClick} aria-label="필터">
-        <AdjustmentsHorizontalIcon style={{ width: '22px', height: '22px' }} />
-      </button>
+      {/* 알림·메시지·마이페이지: 헤더 기준 정중앙 고정 */}
+      {isTitlePage && (
+        <span className="header__page-title">
+          {isNotification ? '알림' : isMessage ? '메시지' : '마이페이지'}
+        </span>
+      )}
 
-      <button
-        className={`header__icon-btn ${isNotification ? 'header__icon-btn--active' : ''}`}
-        onClick={() => navigate('/notification')}
-        aria-label="알림"
-      >
-        {isNotification
-          ? <BellSolid style={{ width: '22px', height: '22px', color: 'var(--color-primary)' }} />
-          : <BellIcon style={{ width: '22px', height: '22px' }} />
-        }
-      </button>
+      {!isMessage && !isMyPage && (
+        <button className="header__icon-btn" onClick={onFilterClick} aria-label="필터">
+          <AdjustmentsHorizontalIcon style={{ width: '22px', height: '22px' }} />
+        </button>
+      )}
+
+      {!isMessage && (
+        <button
+          className={`header__icon-btn ${isNotification ? 'header__icon-btn--active' : ''}`}
+          onClick={() => navigate('/notification')}
+          aria-label="알림"
+        >
+          {isNotification
+            ? <BellSolid style={{ width: '22px', height: '22px', color: 'var(--color-primary)' }} />
+            : <BellIcon style={{ width: '22px', height: '22px' }} />
+          }
+        </button>
+      )}
+
+      {/* 메시지: 오른쪽 뒤로가기 버튼과 균형 맞추는 빈 공간 */}
+      {isMessage && <div style={{ width: '36px', flexShrink: 0 }} />}
     </header>
   );
 }

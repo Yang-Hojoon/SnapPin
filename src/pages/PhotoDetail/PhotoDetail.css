@@ -155,7 +155,7 @@
 }
 
 .detail__map {
-  height: 100px;
+  height: 200px;
   background-color: var(--color-bg);
   border-radius: 10px;
   border: 1px solid var(--color-border);
@@ -373,4 +373,10 @@
   .detail__photo-col {
     flex: 0 0 50%;
   }
+}
+
+/* leaflet z-index를 네비게이션 바 아래로 제한 */
+.detail__map .leaflet-pane,
+.detail__map .leaflet-control-container {
+  z-index: 1 !important;
 }

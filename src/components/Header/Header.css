@@ -15,7 +15,7 @@
 
 .header__logo {
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 700;
   color: var(--color-primary);
   letter-spacing: -0.5px;
   white-space: nowrap;
@@ -256,10 +256,14 @@
 
 /* 알림 등 페이지 타이틀 */
 .header__page-title {
-  flex: 1;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
   font-size: 16px;
   font-weight: 600;
   color: var(--color-text);
+  white-space: nowrap;
 }
 
 /* ===== 모바일 홈 헤더: 위치칩 / 필터 / 로고(중앙) / 검색 / 알림 ===== */

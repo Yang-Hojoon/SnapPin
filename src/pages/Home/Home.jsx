@@ -159,7 +159,7 @@ function Home() {
       {/* 헤더 */}
       <header className="header header--home">
         <button className="header__logo" onClick={() => navigate('/')}>
-          Snap<span>Pin</span>
+          <span>Snap</span>Pin
         </button>
 
         {/* 현재 위치 칩 (모바일 1번) */}

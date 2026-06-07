@@ -129,7 +129,6 @@
 
 /* ===== 설정 ===== */
 .mypage__settings {
-  border-top: 8px solid var(--color-bg);
   margin-top: 8px;
 }
 
