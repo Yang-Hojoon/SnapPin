@@ -17,6 +17,14 @@ function getUserPhotos() {
     return JSON.parse(localStorage.getItem('snappin_user_photos') || '[]');
   } catch { return []; }
 }
+
+// 국내/해외 판별: 한국 좌표 박스(위도 33~39, 경도 124~132) 안이면 국내
+function isDomestic(photo) {
+  return photo.lat >= 33 && photo.lat <= 39 && photo.lng >= 124 && photo.lng <= 132;
+}
+
+// 내 주변 인기순의 반감 거리(km): 이 거리에서 거리 가중치가 0.5가 됨 (발표 튜닝 포인트)
+const NEARBY_HALF_DISTANCE_KM = 10;
 import useGeolocation, { calcDistance, formatDistance } from '../../hooks/useGeolocation';
 import './Home.css';
 
@@ -98,20 +106,43 @@ function Home() {
     if (selectedCategory) {
       photos = photos.filter(p => p.title.includes(selectedCategory) || p.city.includes(selectedCategory));
     }
+    // 탐색 범위 필터 — "어떤 사진을 보여줄지"만 결정
     const activeLocation = customLocation || location;
-    if (scope === 'nearby' && activeLocation) {
-      // 거리 제한 필터
-      if (distanceLimit) {
+    if (scope === 'nearby') {
+      // 내 주변: 위치가 있고 거리 제한이 있으면 그 안의 사진만
+      if (activeLocation && distanceLimit) {
         photos = photos.filter(p => calcDistance(activeLocation.lat, activeLocation.lng, p.lat, p.lng) <= distanceLimit);
       }
-      photos.sort((a, b) => calcDistance(activeLocation.lat, activeLocation.lng, a.lat, a.lng) - calcDistance(activeLocation.lat, activeLocation.lng, b.lat, b.lng));
-    } else if (sortBy === 'popular') {
-      photos.sort((a, b) => b.likes - a.likes);
+    } else if (scope === 'domestic') {
+      photos = photos.filter(p => isDomestic(p));
+    } else if (scope === 'global') {
+      photos = photos.filter(p => !isDomestic(p));
+    }
+
+    // 정렬 — "어떤 순서로 보여줄지"
+    if (sortBy === 'popular') {
+      if (scope === 'nearby' && activeLocation) {
+        // 내 주변 인기순: 좋아요 × 거리 가중치 (가까울수록 점수↑)
+        // 점수를 미리 한 번씩만 계산해두고 정렬
+        photos = photos
+          .map(p => {
+            const d = calcDistance(activeLocation.lat, activeLocation.lng, p.lat, p.lng);
+            const weight = 1 / (1 + d / NEARBY_HALF_DISTANCE_KM);
+            return { photo: p, score: p.likes * weight };
+          })
+          .sort((a, b) => b.score - a.score)
+          .map(item => item.photo);
+      } else {
+        // 국내/해외, 또는 위치 없음 → 순수 좋아요순
+        photos.sort((a, b) => b.likes - a.likes);
+      }
     } else {
+      // 최신순
       photos.sort((a, b) => b.id - a.id);
     }
+
     return photos;
-  }, [searchQuery, selectedCategory, sortBy, scope, location, distanceLimit]);
+  }, [searchQuery, selectedCategory, sortBy, scope, location, distanceLimit, customLocation, allPhotos]);
 
   // 주소 검색 (Nominatim)
   const searchAddress = useCallback(async (query) => {
@@ -356,7 +387,7 @@ function Home() {
                   style={{ opacity: status !== 'success' ? 0.4 : 1 }}>
                   내 주변
                 </button>
-                <button className={`filter-panel__option ${pendingScope === 'domestic' ? 'active' : ''}`} onClick={() => setPendingScope('nearby')}>국내 전체</button>
+                <button className={`filter-panel__option ${pendingScope === 'domestic' ? 'active' : ''}`} onClick={() => setPendingScope('domestic')}>국내 전체</button>
                 <button className={`filter-panel__option ${pendingScope === 'global' ? 'active' : ''}`} onClick={() => setPendingScope('global')}>해외</button>
               </div>
             </div>
