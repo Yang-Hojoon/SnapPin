@@ -208,3 +208,33 @@
     border-top: 1px solid var(--color-border);
   }
 }
+
+/* 삭제 버튼 */
+.mypage__delete-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.mypage__grid > div:hover .mypage__delete-btn {
+  opacity: 1;
+}
+
+/* 모바일에서는 항상 보이게 */
+@media (max-width: 767px) {
+  .mypage__delete-btn {
+    opacity: 1;
+  }
+}

@@ -22,13 +22,12 @@ function UploadPage() {
 
   const [previewUrl, setPreviewUrl] = useState(null);
   const [imageFile, setImageFile] = useState(null);
-  const [placeName, setPlaceName] = useState('');     // 장소명 (피드 제목)
-  const [caption, setCaption] = useState('');          // 설명 (상세 페이지)
+  const [placeName, setPlaceName] = useState('');
+  const [caption, setCaption] = useState('');
   const [category, setCategory] = useState(null);
   const [isPublic, setIsPublic] = useState(true);
-  const [location, setLocation] = useState(null);      // { lat, lng, city, address }
+  const [location, setLocation] = useState(null);
 
-  // 위치 검색
   const [locationSearch, setLocationSearch] = useState('');
   const [locationResults, setLocationResults] = useState([]);
   const [searchingLocation, setSearchingLocation] = useState(false);
@@ -39,7 +38,6 @@ function UploadPage() {
     setImageFile(file);
     setPreviewUrl(URL.createObjectURL(file));
 
-    // EXIF GPS 자동 추출
     try {
       const gps = await exifr.gps(file);
       if (gps?.latitude && gps?.longitude) {
@@ -48,7 +46,6 @@ function UploadPage() {
       }
     } catch {}
 
-    // GPS 자동 감지
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         async (pos) => { await fetchLocationName(pos.coords.latitude, pos.coords.longitude); },
@@ -101,7 +98,6 @@ function UploadPage() {
   const handlePost = () => {
     if (!previewUrl || !placeName.trim()) return;
 
-    // localStorage에 새 게시물 저장
     const newPhoto = {
       id: Date.now(),
       title: placeName.trim(),
@@ -126,76 +122,6 @@ function UploadPage() {
   };
 
   const canPost = previewUrl && placeName.trim();
-
-  const Settings = () => (
-    <>
-      {/* 장소명 */}
-      <div className="upload__section">
-        <p className="upload__section-label">장소명 <span style={{color:'var(--color-primary)'}}>*</span></p>
-        <input
-          className="upload__place-input"
-          placeholder="어디서 찍었나요? (예: 북촌 한옥 골목)"
-          value={placeName}
-          onChange={e => setPlaceName(e.target.value)}
-          maxLength={40}
-        />
-      </div>
-
-      {/* 위치 */}
-      <div className="upload__section">
-        <p className="upload__section-label">위치</p>
-        {location && (
-          <div className="upload__location">
-            <MapPinIcon style={{ width:'14px', height:'14px', color:'var(--color-primary)', flexShrink:0 }} />
-            <span className="upload__location-address">{location.address}</span>
-          </div>
-        )}
-        <div className="upload__location-search">
-          <MagnifyingGlassIcon style={{ width:'13px', height:'13px', color:'var(--color-text-sub)', flexShrink:0 }} />
-          <input
-            className="upload__location-search-input"
-            placeholder="위치 직접 검색..."
-            value={locationSearch}
-            onChange={e => { setLocationSearch(e.target.value); searchLocation(e.target.value); }}
-          />
-        </div>
-        {locationResults.length > 0 && (
-          <div className="upload__location-results">
-            {locationResults.map((r, i) => (
-              <button key={i} className="upload__location-result" onClick={() => selectLocation(r)}>
-                <MapPinIcon style={{ width:'11px', height:'11px', color:'var(--color-primary)', flexShrink:0 }} />
-                <span>{r.display_name.split(',').slice(0, 3).join(', ')}</span>
-              </button>
-            ))}
-          </div>
-        )}
-      </div>
-
-      {/* 카테고리 */}
-      <div className="upload__section">
-        <p className="upload__section-label">카테고리</p>
-        <div className="upload__tags">
-          {CATEGORIES.map(cat => (
-            <button key={cat} className={`upload__tag ${category === cat ? 'active' : ''}`}
-              onClick={() => setCategory(cat === category ? null : cat)}>
-              {cat}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* 공개 범위 */}
-      <div className="upload__section">
-        <div className="upload__toggle-row">
-          <div className="upload__toggle-info">
-            <p className="upload__toggle-title">공개 범위</p>
-            <p className="upload__toggle-sub">{isPublic ? '전체에게 공개됩니다' : '나만 볼 수 있습니다'}</p>
-          </div>
-          <Toggle on={isPublic} onToggle={() => setIsPublic(p => !p)} />
-        </div>
-      </div>
-    </>
-  );
 
   return (
     <>
@@ -226,8 +152,73 @@ function UploadPage() {
               value={caption} onChange={e => setCaption(e.target.value)} maxLength={300} />
           </div>
         </div>
+
         <div className="upload__right-col">
-          <Settings />
+          {/* 장소명 */}
+          <div className="upload__section">
+            <p className="upload__section-label">장소명 <span style={{color:'var(--color-primary)'}}>*</span></p>
+            <input
+              className="upload__place-input"
+              placeholder="어디서 찍었나요? (예: 북촌 한옥 골목)"
+              value={placeName}
+              onChange={e => setPlaceName(e.target.value)}
+              maxLength={40}
+            />
+          </div>
+
+          {/* 위치 */}
+          <div className="upload__section">
+            <p className="upload__section-label">위치</p>
+            {location && (
+              <div className="upload__location">
+                <MapPinIcon style={{ width:'14px', height:'14px', color:'var(--color-primary)', flexShrink:0 }} />
+                <span className="upload__location-address">{location.address}</span>
+              </div>
+            )}
+            <div className="upload__location-search">
+              <MagnifyingGlassIcon style={{ width:'13px', height:'13px', color:'var(--color-text-sub)', flexShrink:0 }} />
+              <input
+                className="upload__location-search-input"
+                placeholder="위치 직접 검색..."
+                value={locationSearch}
+                onChange={e => { setLocationSearch(e.target.value); searchLocation(e.target.value); }}
+              />
+            </div>
+            {locationResults.length > 0 && (
+              <div className="upload__location-results">
+                {locationResults.map((r, i) => (
+                  <button key={i} className="upload__location-result" onClick={() => selectLocation(r)}>
+                    <MapPinIcon style={{ width:'11px', height:'11px', color:'var(--color-primary)', flexShrink:0 }} />
+                    <span>{r.display_name.split(',').slice(0, 3).join(', ')}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* 카테고리 */}
+          <div className="upload__section">
+            <p className="upload__section-label">카테고리</p>
+            <div className="upload__tags">
+              {CATEGORIES.map(cat => (
+                <button key={cat} className={`upload__tag ${category === cat ? 'active' : ''}`}
+                  onClick={() => setCategory(cat === category ? null : cat)}>
+                  {cat}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* 공개 범위 */}
+          <div className="upload__section">
+            <div className="upload__toggle-row">
+              <div className="upload__toggle-info">
+                <p className="upload__toggle-title">공개 범위</p>
+                <p className="upload__toggle-sub">{isPublic ? '전체에게 공개됩니다' : '나만 볼 수 있습니다'}</p>
+              </div>
+              <Toggle on={isPublic} onToggle={() => setIsPublic(p => !p)} />
+            </div>
+          </div>
         </div>
       </main>
       <BottomNav />

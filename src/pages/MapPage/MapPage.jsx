@@ -7,6 +7,13 @@ import Header from '../../components/Header/Header';
 import mockPhotos from '../../data/mockData';
 import './MapPage.css';
 
+function getUserPhotos() {
+  try { return JSON.parse(localStorage.getItem('snappin_user_photos') || '[]'); }
+  catch { return []; }
+}
+
+const allPhotos = [...getUserPhotos(), ...mockPhotos];
+
 // 도시 필터 목록 (데이터 기준)
 const CITIES = ['전체', '서울', '부산', '제주', '강원', '인천', '경주', '전주', '여수', '수원', '대전', '경남', '경북', '충북', '전남', '일본', '중국'];
 
@@ -39,7 +46,7 @@ function MapPage() {
     if (!L || !map || !cluster) return;
 
     cluster.clearLayers();
-    const filtered = city === '전체' ? mockPhotos : mockPhotos.filter(p => p.city === city);
+    const filtered = city === '전체' ? allPhotos : allPhotos.filter(p => p.city === city);
 
     filtered.forEach((photo) => {
       const icon = L.divIcon({
@@ -166,7 +173,7 @@ function MapPage() {
         }
       });
 
-      mockPhotos.forEach((photo) => {
+      allPhotos.forEach((photo) => {
         const icon = L.divIcon({
           className: '',
           html: `
@@ -201,7 +208,7 @@ function MapPage() {
       if (fromPhoto?.lat && fromPhoto?.lng) {
         map.setView([fromPhoto.lat, fromPhoto.lng], 16);
         if (fromPhoto.photoId) {
-          const target = mockPhotos.find(p => p.id === fromPhoto.photoId);
+          const target = allPhotos.find(p => p.id === fromPhoto.photoId);
           if (target) setSelected(target);
         }
       }

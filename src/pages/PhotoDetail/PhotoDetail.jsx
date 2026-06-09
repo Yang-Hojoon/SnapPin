@@ -15,11 +15,31 @@ import './PhotoDetail.css';
 const ICON = { width: '22px', height: '22px' };
 const ICON_SM = { width: '14px', height: '14px' };
 
+const MOCK_AUTHORS = [
+  { name: '김포토',    initial: '김', color: '#EEF2FF', textColor: '#5B5CF6', time: '2시간 전' },
+  { name: 'min_daily', initial: 'M', color: '#FEF3C7', textColor: '#92400E', time: '5시간 전' },
+  { name: 'park.s',    initial: 'P', color: '#D1FAE5', textColor: '#065F46', time: '1일 전'   },
+  { name: 'haneul.log',initial: 'H', color: '#EDE9FE', textColor: '#5B21B6', time: '3시간 전' },
+  { name: 'j.explore_',initial: 'J', color: '#FEE2E2', textColor: '#991B1B', time: '어제'     },
+  { name: 'soo._.pic', initial: 'S', color: '#DBEAFE', textColor: '#1E40AF', time: '방금'     },
+];
+
+function getAuthor(photoId) {
+  return MOCK_AUTHORS[photoId % MOCK_AUTHORS.length];
+}
+
+function getUserPhotos() {
+  try { return JSON.parse(localStorage.getItem('snappin_user_photos') || '[]'); }
+  catch { return []; }
+}
+
 function PhotoDetail() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const photo = mockPhotos.find((p) => p.id === Number(id));
+  const allPhotos = [...getUserPhotos(), ...mockPhotos];
+  const photo = allPhotos.find((p) => p.id === Number(id));
 
+  const author = getAuthor(photo?.id ?? 0);
   const [liked, setLiked] = useState(false);
   const { toggleSave, isSaved } = useSavedPhotos();
   const saved = isSaved(photo?.id);
@@ -53,10 +73,10 @@ function PhotoDetail() {
   const InfoPanel = () => (
     <>
       <div className="detail__author">
-        <div className="detail__avatar">김</div>
+        <div className="detail__avatar" style={{ background: author.color, color: author.textColor }}>{author.initial}</div>
         <div className="detail__author-info">
-          <p className="detail__author-name">김포토</p>
-          <p className="detail__author-time">2시간 전</p>
+          <p className="detail__author-name">{author.name}</p>
+          <p className="detail__author-time">{author.time}</p>
         </div>
         <button className="detail__follow-btn">팔로우</button>
       </div>

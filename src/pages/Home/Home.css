@@ -225,7 +225,7 @@
 }
 
 .filter-panel__apply {
-  margin: 14px 16px 0;
+  margin: 14px 16px;
   width: calc(100% - 32px);
   padding: 12px;
   background-color: var(--color-primary);

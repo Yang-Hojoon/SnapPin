@@ -13,7 +13,7 @@ function SideNav({ activeTab = 'home' }) {
     <nav className="side-nav">
       {/* 로고 — 버튼으로 변경, 클릭 시 홈 이동 */}
       <button className="side-nav__logo" onClick={() => navigate('/')}>
-        Snap<span>Pin</span>
+        <span>Snap</span>Pin
       </button>
 
       <div className="side-nav__menu">

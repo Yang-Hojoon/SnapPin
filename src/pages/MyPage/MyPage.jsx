@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Squares2X2Icon, BookmarkIcon, ChevronRightIcon } from '@heroicons/react/24/outline';
+import { Squares2X2Icon, BookmarkIcon, ChevronRightIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Header from '../../components/Header/Header';
 import BottomNav from '../../components/BottomNav/BottomNav';
 import SideNav from '../../components/SideNav/SideNav';
@@ -8,7 +8,17 @@ import mockPhotos from '../../data/mockData';
 import useSavedPhotos from '../../hooks/useSavedPhotos';
 import './MyPage.css';
 
-const MY_PHOTOS = mockPhotos.slice(0, 9);
+function getUserPhotos() {
+  try { return JSON.parse(localStorage.getItem('snappin_user_photos') || '[]'); }
+  catch { return []; }
+}
+
+function deleteUserPhoto(id) {
+  try {
+    const existing = JSON.parse(localStorage.getItem('snappin_user_photos') || '[]');
+    localStorage.setItem('snappin_user_photos', JSON.stringify(existing.filter(p => p.id !== id)));
+  } catch {}
+}
 
 const SETTINGS = [
   { label: '프로필 편집' },
@@ -21,12 +31,20 @@ const SETTINGS = [
 function MyPage() {
   const navigate = useNavigate();
   const { savedIds } = useSavedPhotos();
-  const SAVED_PHOTOS = mockPhotos.filter(p => savedIds.includes(p.id));
   const [activeTab, setActiveTab] = useState('posts');
+  const [userPhotos, setUserPhotos] = useState(getUserPhotos);
+
+  const SAVED_PHOTOS = mockPhotos.filter(p => savedIds.includes(p.id));
+  const MY_PHOTOS = userPhotos;
 
   const photos = activeTab === 'posts' ? MY_PHOTOS : SAVED_PHOTOS;
 
-  // 프로필 + 설정 (PC 사이드바 / 모바일 상단)
+  const handleDelete = (e, photoId) => {
+    e.stopPropagation();
+    deleteUserPhoto(photoId);
+    setUserPhotos(getUserPhotos());
+  };
+
   const ProfileSection = () => (
     <>
       <div className="mypage__profile">
@@ -47,7 +65,7 @@ function MyPage() {
             </div>
           </div>
         </div>
-        <p className="mypage__username">hyunji.log</p>
+        <p className="mypage__username">hojoon</p>
         <p className="mypage__bio">좋은 장소 발견하면 올려요</p>
         <button className="mypage__edit-btn">프로필 편집</button>
       </div>
@@ -63,7 +81,6 @@ function MyPage() {
     </>
   );
 
-  // 탭 + 그리드
   const GridSection = () => (
     <>
       <div className="mypage__tabs">
@@ -82,13 +99,22 @@ function MyPage() {
               onClick={() => navigate(`/photo/${photo.id}`)}>
               <img src={photo.imageUrl} alt={photo.title}
                 style={{ width:'100%', aspectRatio:'1/1', objectFit:'cover', display:'block' }} />
+              {activeTab === 'posts' && (
+                <button
+                  className="mypage__delete-btn"
+                  onClick={(e) => handleDelete(e, photo.id)}
+                  aria-label="삭제"
+                >
+                  <TrashIcon style={{ width: '14px', height: '14px' }} />
+                </button>
+              )}
             </div>
           ))}
         </div>
       ) : (
         <div className="mypage__empty">
           <BookmarkIcon style={{ width: '40px', height: '40px' }} />
-          <p>저장한 장소가 없습니다</p>
+          <p>{activeTab === 'posts' ? '업로드한 게시물이 없습니다' : '저장한 장소가 없습니다'}</p>
         </div>
       )}
     </>
@@ -100,13 +126,11 @@ function MyPage() {
       <Header />
 
       <main className="mypage">
-        {/* 모바일/태블릿: 세로 레이아웃 */}
         <div className="mypage__mobile-layout">
           <ProfileSection />
           <GridSection />
         </div>
 
-        {/* PC: 좌측 프로필 + 우측 그리드 */}
         <div className="mypage__desktop-layout">
           <div className="mypage__desktop-sidebar">
             <ProfileSection />

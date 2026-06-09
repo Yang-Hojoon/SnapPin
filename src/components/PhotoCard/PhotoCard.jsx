@@ -1,8 +1,8 @@
-import { HeartIcon, MapPinIcon } from '@heroicons/react/24/outline';
+import { HeartIcon, MapPinIcon, TrashIcon } from '@heroicons/react/24/outline';
 import { formatLikes } from '../../data/mockData';
 import './PhotoCard.css';
 
-function PhotoCard({ photo, onClick, distance }) {
+function PhotoCard({ photo, onClick, distance, onDelete }) {
   return (
     <div className="photo-card" onClick={() => onClick(photo)}>
       <img
@@ -11,7 +11,6 @@ function PhotoCard({ photo, onClick, distance }) {
         alt={photo.title}
         loading="lazy"
       />
-      {/* 사진 위 오버레이 */}
       <div className="photo-card__overlay">
         <p className="photo-card__title">{photo.title}</p>
         <div className="photo-card__meta">
@@ -25,6 +24,15 @@ function PhotoCard({ photo, onClick, distance }) {
           </span>
         </div>
       </div>
+      {photo.isUserPhoto && onDelete && (
+        <button
+          className="photo-card__delete-btn"
+          onClick={(e) => { e.stopPropagation(); onDelete(photo.id); }}
+          aria-label="삭제"
+        >
+          <TrashIcon style={{ width: '13px', height: '13px' }} />
+        </button>
+      )}
     </div>
   );
 }

@@ -136,3 +136,33 @@
   .photo-card:hover .photo-card__location,
   .photo-card:hover .photo-card__likes { font-size: 13px; }
 }
+
+/* 홈 피드 삭제 버튼 */
+.photo-card__delete-btn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: rgba(0,0,0,0.55);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.15s;
+  z-index: 10;
+}
+
+.photo-card:hover .photo-card__delete-btn {
+  opacity: 1;
+}
+
+@media (max-width: 767px) {
+  .photo-card__delete-btn {
+    opacity: 1;
+  }
+}
