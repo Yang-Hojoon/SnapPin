@@ -178,9 +178,13 @@ function Home() {
   // 칩에 표시할 텍스트 — PC(1200px+)는 JS로 감지 불가, CSS로 처리
   const chipShort = customLocation
     ? customLocation.name.split(' ').slice(-1)[0]
+    : status === 'denied'
+    ? '위치 설정'
     : (locationName?.short || '내 위치');
   const chipDetail = customLocation
     ? customLocation.name
+    : status === 'denied'
+    ? '눌러서 위치 선택'
     : (locationName?.detail || '현재 위치');
 
   return (
@@ -193,14 +197,14 @@ function Home() {
           <span>Snap</span>Pin
         </button>
 
-        {/* 현재 위치 칩 (모바일 1번) */}
-        {status === 'success' && (
+        {/* 현재 위치 칩 (모바일 1번) - 위치 거부 시에도 표시하여 수동 설정 가능 */}
+        {(status === 'success' || status === 'denied' || customLocation) && (
           <button className="header__location-chip" onClick={() => {
             setLocationSearch('');
             setLocationResults([]);
             setLocationPanelOpen(true);
           }}>
-            <span className="header__location-dot" />
+            <span className={`header__location-dot ${status === 'denied' && !customLocation ? 'off' : ''}`} />
             <span className="header__location-text chip-short">{chipShort}</span>
             <span className="header__location-text chip-detail">{chipDetail}</span>
           </button>

@@ -116,6 +116,12 @@
   animation: location-pulse 2s ease-in-out infinite;
 }
 
+/* 위치 거부 상태: 회색 점, 깜빡임 없음 */
+.header__location-dot.off {
+  background-color: var(--color-text-sub);
+  animation: none;
+}
+
 @keyframes location-pulse {
   0%, 100% { opacity: 1; }
   50% { opacity: 0.4; }
