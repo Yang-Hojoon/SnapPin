@@ -287,11 +287,10 @@
 .message__tablet { display: none; }
 .message__desktop { display: none; }
 
-/* ===== 태블릿 (768px ~ 1199px) ===== */
 @media (min-width: 768px) and (max-width: 1199px) {
   .message {
-    padding-bottom: 0;
     padding-top: var(--header-height);
+    padding-bottom: var(--bottomnav-height);
     height: 100vh;
     overflow: hidden;
     display: flex;
@@ -333,20 +332,6 @@
     flex-direction: column;
     overflow: hidden;
   }
-  /* 대화 미선택 시: 입력란을 항상 하단에 표시 */
-  .message__tablet-chat-placeholder {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-  }
-  .message__tablet-chat-placeholder .message__empty {
-    flex: 1;
-  }
-  .message__tablet-chat-placeholder .message__chat-input {
-    flex-shrink: 0;
-    display: flex;
-  }
   .message__desktop-right .message__chat {
     flex: 1;
     min-height: 0;
@@ -361,11 +346,9 @@
   }
   .message__desktop-right .message__chat-input {
     flex-shrink: 0;
-    display: flex;
   }
 }
 
-/* ===== PC (1200px+) ===== */
 @media (min-width: 1200px) {
   .message {
     padding-bottom: 0;
