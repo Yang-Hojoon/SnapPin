@@ -108,6 +108,62 @@ function ChatView({ selected, messages, input, onInput, onSend, onKey }) {
   );
 }
 
+/* 태블릿 전용: 대화 미선택 시에도 입력란 표시 */
+function TabletChatView({ selected, messages, input, onInput, onSend, onKey }) {
+  if (!selected) {
+    return (
+      <div className="message__tablet-chat-placeholder">
+        <div className="message__empty"><p>대화를 선택해주세요</p></div>
+        <div className="message__chat-input">
+          <input
+            className="message__chat-input-field"
+            placeholder="메시지 입력..."
+            value={input}
+            onChange={e => onInput(e.target.value)}
+            onKeyDown={onKey}
+            disabled
+          />
+          <button className="message__chat-send" disabled>
+            <PaperAirplaneIcon style={{ width: '20px', height: '20px' }} />
+          </button>
+        </div>
+      </div>
+    );
+  }
+  return (
+    <div className="message__chat">
+      <div className="message__chat-header">
+        <div className="message__avatar" style={{ background: selected.avatarColor, color: selected.avatarText }}>
+          {selected.user[0].toUpperCase()}
+        </div>
+        <span className="message__chat-name">{selected.user}</span>
+      </div>
+      <div className="message__chat-body">
+        {messages.map((msg, i) => (
+          <div key={i} className={`message__bubble-wrap ${msg.from === 'me' ? 'me' : 'other'}`}>
+            <div className={`message__bubble ${msg.from === 'me' ? 'me' : 'other'}`}>
+              <p>{msg.text}</p>
+            </div>
+            <span className="message__bubble-time">{msg.time}</span>
+          </div>
+        ))}
+      </div>
+      <div className="message__chat-input">
+        <input
+          className="message__chat-input-field"
+          placeholder="메시지 입력..."
+          value={input}
+          onChange={e => onInput(e.target.value)}
+          onKeyDown={onKey}
+        />
+        <button className="message__chat-send" onClick={onSend}>
+          <PaperAirplaneIcon style={{ width: '20px', height: '20px' }} />
+        </button>
+      </div>
+    </div>
+  );
+}
+
 function MessagePage() {
   const [selected, setSelected] = useState(null);
   const [input, setInput] = useState('');
@@ -194,7 +250,7 @@ function MessagePage() {
               <ConversationList selected={selected} onSelect={setSelected} />
             </div>
             <div className="message__desktop-right">
-              <ChatView
+              <TabletChatView
                 selected={selected}
                 messages={currentMessages}
                 input={input}
