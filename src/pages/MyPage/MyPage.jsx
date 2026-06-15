@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Squares2X2Icon, BookmarkIcon, ChevronRightIcon, TrashIcon } from '@heroicons/react/24/outline';
+import { Squares2X2Icon, BookmarkIcon, HeartIcon, PhotoIcon, ChevronRightIcon, TrashIcon } from '@heroicons/react/24/outline';
 import Header from '../../components/Header/Header';
 import BottomNav from '../../components/BottomNav/BottomNav';
 import SideNav from '../../components/SideNav/SideNav';
 import mockPhotos from '../../data/mockData';
 import useSavedPhotos from '../../hooks/useSavedPhotos';
+import useLikedPhotos from '../../hooks/useLikedPhotos';
 import './MyPage.css';
 
 function getUserPhotos() {
@@ -31,13 +32,17 @@ const SETTINGS = [
 function MyPage() {
   const navigate = useNavigate();
   const { savedIds } = useSavedPhotos();
+  const { likedIds } = useLikedPhotos();
   const [activeTab, setActiveTab] = useState('posts');
   const [userPhotos, setUserPhotos] = useState(getUserPhotos);
 
   const SAVED_PHOTOS = mockPhotos.filter(p => savedIds.includes(p.id));
+  const LIKED_PHOTOS = mockPhotos.filter(p => likedIds.includes(p.id));
   const MY_PHOTOS = userPhotos;
 
-  const photos = activeTab === 'posts' ? MY_PHOTOS : SAVED_PHOTOS;
+  const photos = activeTab === 'posts' ? MY_PHOTOS
+    : activeTab === 'liked' ? LIKED_PHOTOS
+    : SAVED_PHOTOS;
 
   const handleDelete = (e, photoId) => {
     e.stopPropagation();
@@ -87,6 +92,9 @@ function MyPage() {
         <button className={`mypage__tab ${activeTab === 'posts' ? 'active' : ''}`} onClick={() => setActiveTab('posts')}>
           <Squares2X2Icon style={{ width: '22px', height: '22px' }} />
         </button>
+        <button className={`mypage__tab ${activeTab === 'liked' ? 'active' : ''}`} onClick={() => setActiveTab('liked')}>
+          <HeartIcon style={{ width: '22px', height: '22px' }} />
+        </button>
         <button className={`mypage__tab ${activeTab === 'saved' ? 'active' : ''}`} onClick={() => setActiveTab('saved')}>
           <BookmarkIcon style={{ width: '22px', height: '22px' }} />
         </button>
@@ -113,8 +121,19 @@ function MyPage() {
         </div>
       ) : (
         <div className="mypage__empty">
-          <BookmarkIcon style={{ width: '40px', height: '40px' }} />
-          <p>{activeTab === 'posts' ? '업로드한 게시물이 없습니다' : '저장한 장소가 없습니다'}</p>
+          {activeTab === 'posts'
+            ? <PhotoIcon style={{ width: '40px', height: '40px' }} />
+            : activeTab === 'liked'
+            ? <HeartIcon style={{ width: '40px', height: '40px' }} />
+            : <BookmarkIcon style={{ width: '40px', height: '40px' }} />
+          }
+          <p>
+            {activeTab === 'posts'
+              ? '업로드한 게시물이 없습니다'
+              : activeTab === 'liked'
+              ? '좋아요한 사진이 없습니다'
+              : '저장한 장소가 없습니다'}
+          </p>
         </div>
       )}
     </>

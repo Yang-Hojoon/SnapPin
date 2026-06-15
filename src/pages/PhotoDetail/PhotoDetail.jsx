@@ -8,6 +8,7 @@ import { HeartIcon as HeartSolid, BookmarkIcon as BookmarkSolid } from '@heroico
 import { BookmarkIcon } from '@heroicons/react/24/outline';
 import SideNav from '../../components/SideNav/SideNav';
 import useSavedPhotos from '../../hooks/useSavedPhotos';
+import useLikedPhotos from '../../hooks/useLikedPhotos';
 import mockPhotos, { mockComments, formatLikes } from '../../data/mockData';
 import MiniMap from '../../components/MiniMap/MiniMap';
 import './PhotoDetail.css';
@@ -40,9 +41,10 @@ function PhotoDetail() {
   const photo = allPhotos.find((p) => p.id === Number(id));
 
   const author = getAuthor(photo?.id ?? 0);
-  const [liked, setLiked] = useState(false);
   const { toggleSave, isSaved } = useSavedPhotos();
+  const { toggleLike, isLiked } = useLikedPhotos();
   const saved = isSaved(photo?.id);
+  const liked = isLiked(photo?.id);
   const [likeCount, setLikeCount] = useState(photo?.likes || 0);
   const [comments, setComments] = useState(mockComments);
   const [newComment, setNewComment] = useState('');
@@ -50,7 +52,8 @@ function PhotoDetail() {
   if (!photo) { navigate('/'); return null; }
 
   const handleLike = () => {
-    setLiked((prev) => { setLikeCount((c) => prev ? c - 1 : c + 1); return !prev; });
+    setLikeCount((c) => liked ? c - 1 : c + 1);
+    toggleLike(photo.id);
   };
 
   const handleSubmitComment = () => {
