@@ -148,9 +148,24 @@ function MessagePage() {
       <main className="message">
         {/* 모바일 */}
         <div className="message__mobile">
-          <FriendsSection />
-          <div className="message__section-title">대화</div>
-          <ConversationList />
+          {selected ? (
+            <div className="message__mobile-chat">
+              <div className="message__mobile-chat-topbar">
+                <button className="message__mobile-back" onClick={() => setSelected(null)}>←</button>
+                <div className="message__avatar" style={{ background: selected.avatarColor, color: selected.avatarText }}>
+                  {selected.user[0].toUpperCase()}
+                </div>
+                <span className="message__chat-name">{selected.user}</span>
+              </div>
+              <ChatView />
+            </div>
+          ) : (
+            <>
+              <FriendsSection />
+              <div className="message__section-title">대화</div>
+              <ConversationList />
+            </>
+          )}
         </div>
 
         {/* 태블릿 */}
